@@ -25,12 +25,12 @@ namespace MouseMover
             if (mouseMover.Enabled == true)
             {
                 notifyIcon.ContextMenuStrip.Items[0].Text = "Start";
-                mouseMover.Stop();
+                mouseMover.Enabled = false;
             }
             else
             {
                 notifyIcon.ContextMenuStrip.Items[0].Text = "Stop";
-                mouseMover.Start();
+                mouseMover.Enabled = true;
             }
         }
 

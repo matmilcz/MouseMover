@@ -6,39 +6,58 @@ namespace MouseMover
 {
     class MouseMover
     {
-        private readonly Timer moveTimer = new Timer();
+        private readonly Timer movementTimer = new Timer() {
+            Interval = shortInterval
+        };
+        private readonly ScreenAwaker screenAwaker = new ScreenAwaker();
 
-        private readonly int shortInterval = 16; // 60 ticks per sec
-        private readonly int longInterval = 10000; // 10 sec
+        private const int shortInterval = 16; // 60 ticks per sec
+        private const int longInterval = 10000; // 10 sec
 
         private Point[] route;
         private int routeIdx = 0;
         private readonly int routeStep = 7;
 
-        public bool Enabled { get; private set; }
+        private bool _enabled = false;
+        public bool Enabled
+        {
+            get => _enabled;
+            set
+            {
+                _enabled = value;
+                if (_enabled == true)
+                {
+                    Start();
+                }
+                else
+                {
+                    Stop();
+                }
+            } 
+        }
 
         public MouseMover()
         {
-            moveTimer.Tick += new EventHandler(DoTimerRoutine);
-            moveTimer.Interval = shortInterval;
+            movementTimer.Tick += new EventHandler(DoTimerRoutine);
         }
 
-        public void Start()
+        private void Start()
         {
-            Enabled = true;
+            screenAwaker.Enabled = true;
             routeIdx = 0;
-            moveTimer.Start();
+            movementTimer.Enabled = true;
         }
 
-        public void Stop()
+        private void Stop()
         {
-            Enabled = false;
-            moveTimer.Stop();
+            movementTimer.Enabled = false;
+            movementTimer.Interval = shortInterval;
+            screenAwaker.Enabled = false;
         }
 
         private void DoTimerRoutine(object sender, EventArgs e)
         {
-            moveTimer.Stop();
+            movementTimer.Stop();
 
             Point previousPosition = new Point(Cursor.Position.X, Cursor.Position.Y);
 
@@ -49,7 +68,7 @@ namespace MouseMover
             
             if (routeIdx + routeStep < route.Length)
             {
-                moveTimer.Interval = shortInterval;
+                movementTimer.Interval = shortInterval;
                 Cursor.Position = route[routeIdx];
                 routeIdx += routeStep;
             }
@@ -60,11 +79,11 @@ namespace MouseMover
 
             if (routeIdx - (2 * routeStep) > 0 && previousPosition != route[routeIdx - (2 * routeStep)]) // why does it work?
             {
-                moveTimer.Interval = longInterval;
+                movementTimer.Interval = longInterval;
                 routeIdx = 0;
             }
 
-            moveTimer.Start();
+            movementTimer.Start();
         }
 
         private void SetRoute()
