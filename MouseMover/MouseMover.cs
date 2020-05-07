@@ -6,17 +6,19 @@ namespace MouseMover
 {
     class MouseMover
     {
-        private const int shortInterval = 16; // 60 ticks per sec
-        private const int longInterval = 2000;
-        private const uint routeStep = 7;
+        private const int SHORT_INTERVAL = 16; // 60 ticks per sec
+        private const int LONG_INTERVAL = 10000;
+        private const uint ROUTE_STEP = 7;
+        private const byte MAX_BRIGHTNESS = 64;
+        private const byte MIN_BRIGHTNESS = 0;
 
         private readonly Timer shortTimer = new Timer()
         {
-            Interval = shortInterval
+            Interval = SHORT_INTERVAL
         };
         private readonly Timer longTimer = new Timer()
         {
-            Interval = longInterval
+            Interval = LONG_INTERVAL
         };
         private readonly DisplaySnoozeTimeCtrl screenAwaker = new DisplaySnoozeTimeCtrl();
         private readonly MouseRouter mouseRouter = new MouseRouter();
@@ -48,6 +50,8 @@ namespace MouseMover
 
         private void Start()
         {
+            DisplayBrightnessCtrl.SetDisplayBrightness(MIN_BRIGHTNESS);
+
             mouseRouter.SetRoute(ERouteType.Random);
             prevPosition = Cursor.Position;
 
@@ -58,6 +62,8 @@ namespace MouseMover
 
         private void Stop()
         {
+            DisplayBrightnessCtrl.SetDisplayBrightness(MAX_BRIGHTNESS);
+
             shortTimer.Enabled = false;
             longTimer.Enabled = false;
             screenAwaker.Enabled = false;
@@ -71,10 +77,11 @@ namespace MouseMover
             {
                 if (Cursor.Position == prevPosition)
                 {
-                    Cursor.Position = mouseRouter.GetNextPoint(routeStep);
+                    Cursor.Position = mouseRouter.GetNextPoint(ROUTE_STEP);
                 }
                 else
                 {
+                    DisplayBrightnessCtrl.SetDisplayBrightness(MAX_BRIGHTNESS);
                     longTimer.Enabled = true;
                 }
 
@@ -89,6 +96,9 @@ namespace MouseMover
             if (Cursor.Position == prevPosition)
             {
                 mouseRouter.SetRoute(ERouteType.Random);
+
+                DisplayBrightnessCtrl.SetDisplayBrightness(MIN_BRIGHTNESS);
+
                 longTimer.Enabled = false;
             }
             else
