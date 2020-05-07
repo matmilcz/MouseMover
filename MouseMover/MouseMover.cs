@@ -18,7 +18,7 @@ namespace MouseMover
         {
             Interval = longInterval
         };
-        private readonly ScreenAwaker screenAwaker = new ScreenAwaker();
+        private readonly DisplaySnoozeTimeCtrl screenAwaker = new DisplaySnoozeTimeCtrl();
         private readonly MouseRouter mouseRouter = new MouseRouter();
         private Point prevPosition = new Point();
 
