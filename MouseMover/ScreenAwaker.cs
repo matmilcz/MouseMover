@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-//using Microsoft.Win32;
 
 namespace MouseMover
 {
@@ -9,12 +8,8 @@ namespace MouseMover
         [FlagsAttribute()]
         public enum EExecutionState : uint
         {
-            //ES_AWAYMODE_REQUIRED = 0x40,
             Continuous = 0x80000000u,
             DisplayRequired = 0x2,
-            //SystemRequired = 0x1
-            // Legacy flag, should not be used.
-            // ES_USER_PRESENT = 0x00000004
         }
 
         // Enables an application to inform the system that it is in use, 
