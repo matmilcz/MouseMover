@@ -4,42 +4,54 @@ using System.Drawing;
 
 namespace MouseMover
 {
+    public enum ERouteType
+    {
+        Random
+        // TODO: Add more shapes
+    }
+
     class MouseRouter
     {
         private Point[] route;
         private uint routeIdx = 0;
 
-        public void Reset()
+        public void SetRoute(ERouteType eRouteType)
         {
-            routeIdx = 0;
+            switch (eRouteType)
+            {
+                case ERouteType.Random:
+                    SetRandomRoute(0);
+                    break;
+            }
         }
 
         public Point GetNextPoint(uint routeStep)
         {
-            if (routeIdx == 0)
-            {
-                SetRoute();
-            }
-
             if (routeIdx + routeStep < route.Length)
             {
                 routeIdx += routeStep;
             }
             else
             {
-                SetRoute();
-                while (!(routeStep < route.Length))
-                {
-                    SetRoute();
-                }
-                routeIdx = routeStep;
+                SetRandomRoute(routeStep, routeStep);
             }
 
             return route[routeIdx];
         }
 
-        private void SetRoute()
+        private void SetRandomRoute(uint minLength, uint newIdx)
         {
+            SetRandomRoute(newIdx);
+            while (!(minLength < route.Length))
+            {
+                SetRandomRoute(newIdx);
+            }
+        }
+
+        private void SetRandomRoute(uint newIdx)
+        {
+            routeIdx = newIdx;
+
             Random random = new Random();
             int destX = random.Next(1, Screen.PrimaryScreen.Bounds.Width - 1);
             int destY = random.Next(1, Screen.PrimaryScreen.Bounds.Height - 1);

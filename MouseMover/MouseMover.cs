@@ -48,7 +48,7 @@ namespace MouseMover
 
         private void Start()
         {
-            mouseRouter.Reset();
+            mouseRouter.SetRoute(ERouteType.Random);
             prevPosition = Cursor.Position;
 
             shortTimer.Enabled = true;
@@ -88,7 +88,7 @@ namespace MouseMover
         {
             if (Cursor.Position == prevPosition)
             {
-                mouseRouter.Reset();
+                mouseRouter.SetRoute(ERouteType.Random);
                 longTimer.Enabled = false;
             }
             else
