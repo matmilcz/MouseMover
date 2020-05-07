@@ -6,17 +6,21 @@ namespace MouseMover
 {
     class MouseMover
     {
-        private readonly Timer movementTimer = new Timer() {
+        private const int shortInterval = 16; // 60 ticks per sec
+        private const int longInterval = 2000;
+        private const uint routeStep = 7;
+
+        private readonly Timer shortTimer = new Timer()
+        {
             Interval = shortInterval
+        };
+        private readonly Timer longTimer = new Timer()
+        {
+            Interval = longInterval
         };
         private readonly ScreenAwaker screenAwaker = new ScreenAwaker();
         private readonly MouseRouter mouseRouter = new MouseRouter();
         private Point prevPosition = new Point();
-
-        private const int shortInterval = 16; // 60 ticks per sec
-        private const int longInterval = 10000;
-
-        private const uint routeStep = 7;
 
         private bool _enabled = false;
         public bool Enabled
@@ -38,43 +42,59 @@ namespace MouseMover
 
         public MouseMover()
         {
-            movementTimer.Tick += new EventHandler(DoTimerRoutine);
+            shortTimer.Tick += new EventHandler(ShortTimerTick);
+            longTimer.Tick += new EventHandler(LongTimerTick);
         }
 
         private void Start()
         {
+            mouseRouter.Reset();
             prevPosition = Cursor.Position;
+
+            shortTimer.Enabled = true;
+            longTimer.Enabled = false;
             screenAwaker.Enabled = true;
-            movementTimer.Enabled = true;
         }
 
         private void Stop()
         {
-            movementTimer.Enabled = false;
-            movementTimer.Interval = shortInterval;
+            shortTimer.Enabled = false;
+            longTimer.Enabled = false;
             screenAwaker.Enabled = false;
         }
 
-        private void DoTimerRoutine(object sender, EventArgs e)
+        private void ShortTimerTick(object sender, EventArgs e)
         {
-            movementTimer.Stop();
+            shortTimer.Enabled = false;
 
-            Point currPosition = Cursor.Position;
-
-            if (currPosition == prevPosition)
+            if (longTimer.Enabled == false)
             {
-                Cursor.Position = mouseRouter.GetNextPoint(routeStep);
-                movementTimer.Interval = shortInterval;
+                if (Cursor.Position == prevPosition)
+                {
+                    Cursor.Position = mouseRouter.GetNextPoint(routeStep);
+                }
+                else
+                {
+                    longTimer.Enabled = true;
+                }
+
                 prevPosition = Cursor.Position;
+            }
+
+            shortTimer.Enabled = true;
+        }
+
+        private void LongTimerTick(object sender, EventArgs e)
+        {
+            if (Cursor.Position == prevPosition)
+            {
+                mouseRouter.Reset();
+                longTimer.Enabled = false;
             }
             else
             {
-                mouseRouter.SetRoute();
-                movementTimer.Interval = longInterval;
-                prevPosition = currPosition;
+                prevPosition = Cursor.Position;
             }
-
-            movementTimer.Start();
         }
     }
 }

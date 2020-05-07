@@ -9,16 +9,9 @@ namespace MouseMover
         private Point[] route;
         private uint routeIdx = 0;
 
-        public Point GetCurrPoint()
+        public void Reset()
         {
-            if (routeIdx == 0)
-            {
-                return new Point(Cursor.Position.X, Cursor.Position.Y);
-            }
-            else
-            {
-                return route[routeIdx];
-            }
+            routeIdx = 0;
         }
 
         public Point GetNextPoint(uint routeStep)
@@ -45,13 +38,13 @@ namespace MouseMover
             return route[routeIdx];
         }
 
-        public void SetRoute()
+        private void SetRoute()
         {
             Random random = new Random();
             int destX = random.Next(1, Screen.PrimaryScreen.Bounds.Width - 1);
             int destY = random.Next(1, Screen.PrimaryScreen.Bounds.Height - 1);
 
-            Point currentPosition = new Point(Cursor.Position.X, Cursor.Position.Y);
+            Point currentPosition = Cursor.Position;
             Point destinationPosition = new Point(destX, destY);
 
             //
