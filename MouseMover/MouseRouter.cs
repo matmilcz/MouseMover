@@ -22,6 +22,9 @@ namespace MouseMover
                 case ERouteType.Random:
                     SetRandomRoute(0);
                     break;
+                default:
+                    SetRandomRoute(0);
+                    break;
             }
         }
 
