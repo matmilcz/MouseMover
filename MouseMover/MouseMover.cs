@@ -8,8 +8,7 @@ namespace MouseMover
     {
         private const int SHORT_INTERVAL = 16; // 60 ticks per sec
         private const int LONG_INTERVAL = 10000;
-        private const uint ROUTE_STEP = 7;
-        private const byte MAX_BRIGHTNESS = 64;
+        private const byte MAX_BRIGHTNESS = 64; // TODO: implement setting the previous brightness value
         private const byte MIN_BRIGHTNESS = 0;
 
         private readonly Timer shortTimer = new Timer()
@@ -77,7 +76,7 @@ namespace MouseMover
             {
                 if (Cursor.Position == prevPosition)
                 {
-                    Cursor.Position = mouseRouter.GetNextPoint(ROUTE_STEP);
+                    mouseRouter.RouteToNextPoint();
                 }
                 else
                 {
