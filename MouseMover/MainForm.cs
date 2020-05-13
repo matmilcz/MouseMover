@@ -36,9 +36,14 @@ namespace MouseMover
 
         private void NotifyIcon_ContextMenu_About(object sender, EventArgs e)
         {
+#if DEBUG
+            const string debug = "DEBUG version\n\n";
+#else
+            const string debug = "";
+#endif
             const string thanks = "Special thanks to my beta tester from NS.";
             const string attribution = "Icons made by https://www.flaticon.com/authors/freepik from https://www.flaticon.com.";
-            _ = MessageBox.Show(thanks + "\n\n" + attribution);
+            _ = MessageBox.Show(debug + thanks + "\n\n" + attribution);
         }
 
         private void NotifyIcon_ContextMenu_Exit(object sender, EventArgs e)
