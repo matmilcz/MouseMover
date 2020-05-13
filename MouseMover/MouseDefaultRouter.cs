@@ -7,44 +7,68 @@ namespace MouseMover
     public class MouseDefaultRouter : IMouseRouter
     {
         // f(x) = mx + b
-        private float m = 0;
-        private float b = 0;
+        private double m = 0;
+        private double b = 0;
 
-        private Point destinationPosition = Cursor.Position;
+        private Point endPosition = new Point();
+        private PointF currPosition = new PointF();
 
-        private void SetDestinationPosition()
+        private void SetPositions()
         {
             Random random = new Random();
             int destX = random.Next(1, Screen.PrimaryScreen.Bounds.Width - 1);
             int destY = random.Next(1, Screen.PrimaryScreen.Bounds.Height - 1);
 
-            destinationPosition = new Point(destX, destY);
+            endPosition = new Point(destX, destY);
+            currPosition = new PointF(Cursor.Position.X, Cursor.Position.Y);
         }
 
         public void SetRoute()
         {
-            SetDestinationPosition();
+            SetPositions();
 
-            Point currentPosition = Cursor.Position;
-
-            float dx = destinationPosition.X - currentPosition.X;
+            double dx = endPosition.X - currPosition.X;
             if (dx == 0.0f)
             {
                 dx = 1.0f; // if dx == 0, then m is whatever, I do not care
             }
-            m = (destinationPosition.Y - currentPosition.Y) / dx;
-            b = currentPosition.Y - (m * currentPosition.X);
+            m = (endPosition.Y - currPosition.Y) / dx;
+            b = currPosition.Y - (m * currPosition.X);
         }
 
         public void RouteToNextPoint(int routeStep)
         {
-            while (Math.Abs(destinationPosition.X - Cursor.Position.X) <= routeStep)
+            double distanceX = Math.Abs(currPosition.X - (double)endPosition.X);
+            double distanceY = Math.Abs(currPosition.Y - (double)endPosition.Y);
+            double distance = Math.Sqrt(Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2));
+
+            while (distance <= routeStep)
             {
                 SetRoute();
+
+                distanceX = Math.Abs(currPosition.X - (double)endPosition.X);
+                distanceY = Math.Abs(currPosition.Y - (double)endPosition.Y);
+                distance = Math.Sqrt(Math.Pow(distanceX, 2) + Math.Pow(distanceY, 2));
             }
 
-            int nextX = destinationPosition.X > Cursor.Position.X ? Cursor.Position.X + routeStep : Cursor.Position.X - routeStep;
-            Cursor.Position = new Point(nextX, (int)((nextX * m) + b));
+            double routeStepX = distanceX / (distance / routeStep);
+
+            RouteToNextPoint(routeStepX);
+        }
+
+        private void RouteToNextPoint(double routeStepX)
+        {
+            if ((double)endPosition.X > currPosition.X)
+            {
+                currPosition.X += (float)routeStepX;
+            }
+            else
+            {
+                currPosition.X -= (float)routeStepX;
+            }
+            currPosition.Y = (float)((m * currPosition.X) + b);
+
+            Cursor.Position = new Point((int)currPosition.X, (int)currPosition.Y);
         }
     }
 }
