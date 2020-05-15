@@ -6,6 +6,8 @@ namespace MouseMover
 {
     class MouseMover
     {
+        private readonly CatMover catMover;
+
         private const int SHORT_INTERVAL = 16; // 60 ticks per sec
         private const int LONG_INTERVAL = 10000;
         private const byte MAX_BRIGHTNESS = 64; // TODO: implement setting the previous brightness value
@@ -41,8 +43,9 @@ namespace MouseMover
             } 
         }
 
-        public MouseMover()
+        public MouseMover(CatMover _catMover)
         {
+            catMover = _catMover;
             shortTimer.Tick += new EventHandler(ShortTimerTick);
             longTimer.Tick += new EventHandler(LongTimerTick);
         }
@@ -94,6 +97,8 @@ namespace MouseMover
         {
             if (Cursor.Position == prevPosition)
             {
+                catMover.MoveToPoint(Cursor.Position);
+
                 mouseRouter.SetRoute(ERouteType.Random);
 
                 DisplayBrightnessCtrl.SetDisplayBrightness(MIN_BRIGHTNESS);

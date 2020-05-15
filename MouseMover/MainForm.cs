@@ -5,9 +5,12 @@ namespace MouseMover
 {
     public partial class MainForm : Form
     {
-        private readonly MouseMover mouseMover = new MouseMover();
-        public MainForm()
+        private readonly MouseMover mouseMover;
+        private readonly CatMover catMover;
+        public MainForm(CatForm _catForm)
         {
+            catMover = new CatMover(_catForm);
+            mouseMover = new MouseMover(catMover);
             InitializeComponent();
             InitializeSystemTrayContextMenu();
         }

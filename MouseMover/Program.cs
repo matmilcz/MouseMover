@@ -14,7 +14,12 @@ namespace MouseMover
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            _ = new MainForm();
+            CatForm catForm = new CatForm
+            {
+                Visible = false
+            };
+
+            _ = new MainForm(catForm);
 
             Application.Run();
         }
