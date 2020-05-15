@@ -45,7 +45,10 @@ namespace MouseMover
             const string debug = "";
 #endif
             const string thanks = "Special thanks to my beta tester from NS.";
-            const string attribution = "Icons made by https://www.flaticon.com/authors/freepik from https://www.flaticon.com.";
+            const string attribution =
+                "Icons made by:\n\n" +
+                "https://www.flaticon.com/authors/freepik from https://www.flaticon.com\n\n" +
+                "https://www.deviantart.com/sammycatbone";
             _ = MessageBox.Show(debug + thanks + "\n\n" + attribution);
         }
 
