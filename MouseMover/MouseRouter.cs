@@ -12,7 +12,7 @@ namespace MouseMover
 
     class MouseRouter
     {
-        private const int ROUTE_STEP = 7;
+        public const int ROUTE_STEP = 7;
 
         public IMouseRouter router = new MouseDefaultRouter();
 

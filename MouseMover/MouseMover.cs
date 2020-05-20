@@ -77,7 +77,8 @@ namespace MouseMover
 
             if (longTimer.Enabled == false)
             {
-                if (Cursor.Position == prevPosition)
+                if (Math.Abs(Cursor.Position.X - prevPosition.X) <= MouseRouter.ROUTE_STEP &&
+                    Math.Abs(Cursor.Position.Y - prevPosition.Y) <= MouseRouter.ROUTE_STEP)
                 {
                     mouseRouter.RouteToNextPoint();
                 }
