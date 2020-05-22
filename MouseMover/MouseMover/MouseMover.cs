@@ -21,7 +21,7 @@ namespace MouseMover
         {
             Interval = LONG_INTERVAL
         };
-        private readonly DisplaySnoozeTimeCtrl screenAwaker = new DisplaySnoozeTimeCtrl();
+        private readonly ScreenSnoozeTimeCtrl screenAwaker = new ScreenSnoozeTimeCtrl();
         private readonly MouseRouter mouseRouter = new MouseRouter();
         private Point prevPosition = new Point();
 
@@ -52,7 +52,7 @@ namespace MouseMover
 
         private void Start()
         {
-            DisplayBrightnessCtrl.SetDisplayBrightness(MIN_BRIGHTNESS);
+            ScreenBrightnessCtrl.SetDisplayBrightness(MIN_BRIGHTNESS);
 
             mouseRouter.SetRoute(ERouteType.Random);
             prevPosition = Cursor.Position;
@@ -64,7 +64,7 @@ namespace MouseMover
 
         private void Stop()
         {
-            DisplayBrightnessCtrl.SetDisplayBrightness(MAX_BRIGHTNESS);
+            ScreenBrightnessCtrl.SetDisplayBrightness(MAX_BRIGHTNESS);
 
             shortTimer.Enabled = false;
             longTimer.Enabled = false;
@@ -84,7 +84,7 @@ namespace MouseMover
                 }
                 else
                 {
-                    DisplayBrightnessCtrl.SetDisplayBrightness(MAX_BRIGHTNESS);
+                    ScreenBrightnessCtrl.SetDisplayBrightness(MAX_BRIGHTNESS);
                     longTimer.Enabled = true;
                 }
 
@@ -102,7 +102,7 @@ namespace MouseMover
 
                 mouseRouter.SetRoute(ERouteType.Random);
 
-                DisplayBrightnessCtrl.SetDisplayBrightness(MIN_BRIGHTNESS);
+                ScreenBrightnessCtrl.SetDisplayBrightness(MIN_BRIGHTNESS);
 
                 longTimer.Enabled = false;
             }

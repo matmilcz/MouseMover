@@ -3,7 +3,7 @@ using System.Runtime.InteropServices;
 
 namespace MouseMover
 {
-    class DisplaySnoozeTimeCtrl
+    class ScreenSnoozeTimeCtrl
     {
         [FlagsAttribute()]
         public enum EExecutionState : uint

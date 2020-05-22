@@ -6,7 +6,7 @@ using System.Management;
 
 namespace MouseMover
 {
-    class DisplayBrightnessCtrl
+    class ScreenBrightnessCtrl
     {
         public static void SetDisplayBrightness(byte brightness)
         {
