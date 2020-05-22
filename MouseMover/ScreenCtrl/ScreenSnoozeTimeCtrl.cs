@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace MouseMover
+namespace MouseMover.ScreenControll
 {
     class ScreenSnoozeTimeCtrl
     {
@@ -18,8 +18,8 @@ namespace MouseMover
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern EExecutionState SetThreadExecutionState(EExecutionState esFlags);
 
-        private bool _enabled = false;
-        public bool Enabled
+        private static bool _enabled = false;
+        public static bool Enabled
         {
             get => _enabled;
             set

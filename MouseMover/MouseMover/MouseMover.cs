@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Drawing;
+using MouseMover.ScreenControll;
 
 namespace MouseMover
 {
@@ -21,7 +22,7 @@ namespace MouseMover
         {
             Interval = LONG_INTERVAL
         };
-        private readonly ScreenSnoozeTimeCtrl screenAwaker = new ScreenSnoozeTimeCtrl();
+        private readonly ScreenCtrl screenCtrl = new ScreenCtrl();
         private readonly MouseRouter mouseRouter = new MouseRouter();
         private Point prevPosition = new Point();
 
@@ -52,23 +53,23 @@ namespace MouseMover
 
         private void Start()
         {
-            ScreenBrightnessCtrl.SetDisplayBrightness(MIN_BRIGHTNESS);
+            screenCtrl.SetBrightness(MIN_BRIGHTNESS);
+            screenCtrl.ScreenAwakerEnabled = true;
 
             mouseRouter.SetRoute(ERouteType.Random);
             prevPosition = Cursor.Position;
 
             shortTimer.Enabled = true;
             longTimer.Enabled = false;
-            screenAwaker.Enabled = true;
         }
 
         private void Stop()
         {
-            ScreenBrightnessCtrl.SetDisplayBrightness(MAX_BRIGHTNESS);
+            screenCtrl.SetBrightness(MAX_BRIGHTNESS);
+            screenCtrl.ScreenAwakerEnabled = false;
 
             shortTimer.Enabled = false;
             longTimer.Enabled = false;
-            screenAwaker.Enabled = false;
         }
 
         private void ShortTimerTick(object sender, EventArgs e)
@@ -84,7 +85,8 @@ namespace MouseMover
                 }
                 else
                 {
-                    ScreenBrightnessCtrl.SetDisplayBrightness(MAX_BRIGHTNESS);
+                    screenCtrl.SetBrightness(MAX_BRIGHTNESS);
+
                     longTimer.Enabled = true;
                 }
 
@@ -102,7 +104,7 @@ namespace MouseMover
 
                 mouseRouter.SetRoute(ERouteType.Random);
 
-                ScreenBrightnessCtrl.SetDisplayBrightness(MIN_BRIGHTNESS);
+                screenCtrl.SetBrightness(MIN_BRIGHTNESS);
 
                 longTimer.Enabled = false;
             }

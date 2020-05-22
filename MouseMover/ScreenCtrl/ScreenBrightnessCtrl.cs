@@ -4,31 +4,38 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Management;
 
-namespace MouseMover
+namespace MouseMover.ScreenControll
 {
-    class ScreenBrightnessCtrl
+    public static class ScreenBrightnessCtrl
     {
+        private static readonly ManagementScope scope = new ManagementScope("root\\WMI");
+        private static readonly SelectQuery query = new SelectQuery("WmiMonitorBrightnessMethods");
+        private static readonly ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query);
+        private static readonly ManagementObjectCollection objectCollection = searcher.Get();
+        private static readonly ManagementObjectCollection.ManagementObjectEnumerator objectCollectionEnumerator = objectCollection.GetEnumerator();
+
+        static ScreenBrightnessCtrl()
+        {
+            _ = objectCollectionEnumerator.MoveNext();
+        }
+
         public static void SetDisplayBrightness(byte brightness)
         {
-            ManagementScope scope = new ManagementScope("root\\WMI");
-            SelectQuery query = new SelectQuery("WmiMonitorBrightnessMethods");
-            using (ManagementObjectSearcher searcher = new ManagementObjectSearcher(scope, query))
+            foreach (ManagementObject mObj in objectCollection)
             {
-                using (ManagementObjectCollection objectCollection = searcher.Get())
-                {
-                    foreach (ManagementObject mObj in objectCollection)
-                    {
-                        mObj.InvokeMethod("WmiSetBrightness",
-                            new Object[] { UInt32.MaxValue, brightness });
-                        break;
-                    }
-                }
+                _ = mObj.InvokeMethod("WmiSetBrightness", new object[] { uint.MaxValue, brightness });
+                break;
             }
         }
 
-        public static void SetDisplayBrightness()
+        public static int GetDisplayBrightness()
         {
-            // TODO
+            foreach (ManagementObject mObj in objectCollection)
+            {
+                var val = mObj.GetPropertyValue("CurrentBrightness").ToString();
+                return int.Parse(val);
+            }
+            return -1;
         }
     }
 }
