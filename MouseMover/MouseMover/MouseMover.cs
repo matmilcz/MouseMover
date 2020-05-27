@@ -72,14 +72,18 @@ namespace MouseMover
             longTimer.Enabled = false;
         }
 
+        private bool ComparePointsWithThreshold(Point p1, Point p2, int threshold = 0)
+        {
+            return Math.Abs(p1.X - p2.X) <= threshold && Math.Abs(p1.Y - p2.Y) <= threshold;
+        }
+
         private void ShortTimerTick(object sender, EventArgs e)
         {
             shortTimer.Enabled = false;
 
             if (longTimer.Enabled == false)
             {
-                if (Math.Abs(Cursor.Position.X - prevPosition.X) <= MouseRouter.ROUTE_STEP &&
-                    Math.Abs(Cursor.Position.Y - prevPosition.Y) <= MouseRouter.ROUTE_STEP)
+                if (ComparePointsWithThreshold(Cursor.Position, prevPosition, MouseRouter.ROUTE_STEP))
                 {
                     mouseRouter.RouteToNextPoint();
                 }
