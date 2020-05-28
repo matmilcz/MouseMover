@@ -14,9 +14,14 @@ namespace MouseMover.ScreenControll
             set => ScreenSnoozeTimeCtrl.Enabled = value;
         }
 
-        public void SetBrightness(byte brightness)
+        public void SetBrightness(int brightness)
         {
             ScreenBrightnessCtrl.SetDisplayBrightness(brightness);
+        }
+
+        public void ResetBrightness()
+        {
+            ScreenBrightnessCtrl.ResetDisplayBrightness();
         }
     }
 }

@@ -11,8 +11,7 @@ namespace MouseMover
 
         private const int SHORT_INTERVAL = 16; // 60 ticks per sec
         private const int LONG_INTERVAL = 10000;
-        private const byte MAX_BRIGHTNESS = 64; // TODO: implement setting the previous brightness value
-        private const byte MIN_BRIGHTNESS = 0;
+        private const int MIN_BRIGHTNESS = 0;
 
         private readonly Timer shortTimer = new Timer()
         {
@@ -65,7 +64,6 @@ namespace MouseMover
 
         private void Stop()
         {
-            screenCtrl.SetBrightness(MAX_BRIGHTNESS);
             screenCtrl.ScreenAwakerEnabled = false;
 
             shortTimer.Enabled = false;
@@ -89,7 +87,7 @@ namespace MouseMover
                 }
                 else
                 {
-                    screenCtrl.SetBrightness(MAX_BRIGHTNESS);
+                    screenCtrl.ResetBrightness();
 
                     longTimer.Enabled = true;
                 }
