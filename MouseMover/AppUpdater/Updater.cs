@@ -23,7 +23,7 @@ namespace MouseMover.AppUpdater
             "del master.zip",
             "rd /s /q MouseMover-master",
 
-            "start \"\" MouseMover.exe"
+            "start \"\" .\\MouseMover.exe"
         };
 
         public static void Update() // TODO: it downloads whole repo now...
