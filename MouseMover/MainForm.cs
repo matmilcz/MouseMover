@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using MouseMover.AppUpdater;
 
 namespace MouseMover
 {
@@ -13,12 +14,14 @@ namespace MouseMover
             mouseMover = new MouseMover(catMover);
             InitializeComponent();
             InitializeSystemTrayContextMenu();
+            Updater.DeleteScript();
         }
 
         private void InitializeSystemTrayContextMenu()
         {
             notifyIcon.ContextMenuStrip = new ContextMenuStrip();
             _ = notifyIcon.ContextMenuStrip.Items.Add("Start", null, NotifyIcon_ContextMenu_Start_Stop);
+            _ = notifyIcon.ContextMenuStrip.Items.Add("Update", null, NotifyIcon_ContextMenu_Update);
             _ = notifyIcon.ContextMenuStrip.Items.Add("About", null, NotifyIcon_ContextMenu_About);
             _ = notifyIcon.ContextMenuStrip.Items.Add("Exit", null, NotifyIcon_ContextMenu_Exit);
         }
@@ -35,6 +38,12 @@ namespace MouseMover
                 notifyIcon.ContextMenuStrip.Items[0].Text = "Stop";
                 mouseMover.Enabled = true;
             }
+        }
+
+        private void NotifyIcon_ContextMenu_Update(object sender, EventArgs e)
+        {
+            notifyIcon.Visible = false;
+            Updater.Update();
         }
 
         private void NotifyIcon_ContextMenu_About(object sender, EventArgs e)

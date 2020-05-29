@@ -72,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenCtrl\ScreenCtrl.cs" />
     <Compile Include="ScreenCtrl\ScreenSnoozeTimeCtrl.cs" />
+    <Compile Include="AppUpdater\Updater.cs" />
     <EmbeddedResource Include="CatMover\CatForm.resx">
       <DependentUpon>CatForm.cs</DependentUpon>
     </EmbeddedResource>
