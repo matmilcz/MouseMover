@@ -104,4 +104,7 @@
     <Content Include="mouse.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy.exe /D /Y "$(ProjectDir)bin\Release\$(TargetName)$(TargetExt)" "$(SolutionDir)Release"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
